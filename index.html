@@ -1,0 +1,81 @@
+<h1>What Happens on Accept or Decline</h1>
+<p><strong>On Accept:</strong> You can proceed to use cookies as planned. The acceptCookies function sets a consent cookie and hides the disclaimer. 
+    You can also initialize any analytics or services that use cookies here.</p>
+<p><strong>On Decline:</strong> You should respect the user's choice and avoid setting any non-essential cookies. 
+    The declineCookies function also sets a consent cookie (indicating decline) and hides the disclaimer. 
+    Make sure to disable any non-essential scripts or trackers that use cookies.</p>
+
+<h2>Remembering User Preference</h2>
+<p>The cookieConsent cookie is used to remember the user's choice. If this cookie is present, the disclaimer won't be shown again. 
+    This is checked in the window.onload function.</p>
+
+
+
+<div id="cookieDisclaimer" style="display: none; position: fixed; bottom: 0; width: 100%; background: gray; padding: 10px; text-align: center;">
+    We use cookies to improve your experience. 
+    <button onclick="acceptCookies()">Accept</button>
+    <button onclick="declineCookies()">Decline</button>
+</div>
+
+
+<!-- Implement JavaScript functions to handle acceptance or rejection of cookies: -->
+<script>
+    window.onload = function() {
+        if (!getCookie("cookieConsent")) {
+            document.getElementById("cookieDisclaimer").style.display = "block";
+        }
+    };
+
+    function initializeAnalytics() {
+        if (getCookie("cookieConsent") === "yes") {
+            // disabled the script since for not havving javascript errors, you should enable it properly
+            // Load Google Analytics or other non-essential scripts
+            /*(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+            
+            
+            //ga('create', 'YOUR_ANALYTICS_ID', 'auto');
+            //ga('send', 'pageview');*/
+            alert("the initializeAnalytics loaded, for next time to try you need to see it in incognito mode since this won't apear again");
+        }
+    }
+
+    function acceptCookies() {
+        setCookie("cookieConsent", "yes", 365); // Set a cookie for one year
+        initializeAnalytics(); // Initialize Google Analytics or other scripts
+        document.getElementById("cookieDisclaimer").style.display = "none";
+        // Implement actions to enable cookies such google analytics
+        
+    }
+
+    function declineCookies() {
+        setCookie("cookieConsent", "no", 365); // Set a cookie for one year
+        document.getElementById("cookieDisclaimer").style.display = "none";
+        // don't Implement actions to like initializeAnalytics
+        alert("the initializeAnalytics not loaded, for next time to try you need to see it in incognito mode since this won't apear again");
+    }
+
+    function setCookie(name, value, days) {
+        var expires = "";
+        if (days) {
+            var date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+    }
+
+    function getCookie(name) {
+        var nameEQ = name + "=";
+        var ca = document.cookie.split(';');
+        for(var i=0;i < ca.length;i++) {
+            var c = ca[i];
+            while (c.charAt(0)==' ') c = c.substring(1,c.length);
+            if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+        }
+        return null;
+    }
+</script>
+
